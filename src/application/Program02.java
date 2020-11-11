@@ -5,11 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-import model.entities.Reservation01;
+import model.entities.Reservation02;
 
-public class Program01 {
+public class Program02 {
 
 	public static void main(String[] args) throws ParseException {
+		
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		System.out.print("Room number: ");
@@ -22,22 +23,18 @@ public class Program01 {
 		if (!checkOut.after(checkIn)) {
 			System.out.println("Error in reservation: Check-out date must be after check-in date");
 		}else {
-			Reservation01 reservation = new Reservation01(roomNumber, checkIn, checkOut);
+			Reservation02 reservation = new Reservation02(roomNumber, checkIn, checkOut);
 			System.out.println("Reservation: " + reservation);
 			System.out.println();
 			System.out.println("Enter data to update the reservation:");
 			System.out.print("Check-in date (dd/MM/yyyy): ");
 			checkIn = sdf.parse(sc.next());
 			System.out.print("Check-out date (dd/MM/yyyy): ");
-			checkOut = sdf.parse(sc.next());
-			//Para pegar a Data Atual (de agora):
-			Date now = new Date();
-			if(checkIn.before(now) || checkOut.before(now)) {
-				System.out.println("Error in reservation: Reservation dates for update must be future dates");
-			}else if (!checkOut.after(checkIn)) {
-				System.out.println("Error in reservation: Check-out date must be after check-in date");
+			checkOut = sdf.parse(sc.next());			
+			String error = reservation.updateDates(checkIn, checkOut);
+			if(error != null) {
+				System.out.println("Error in reservation: " + error);
 			}else {
-				reservation.updateDates(checkIn, checkOut);
 				System.out.println("Reservation: " + reservation);
 			}
 		}		
